@@ -5,7 +5,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- ✅ Stable Spring Boot version -->
+    <!-- ✅ Stable Boot -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -14,55 +14,33 @@
     </parent>
 
     <groupId>com.linkedin</groupId>
-    <artifactId>posts-service</artifactId>
+    <artifactId>api-gateway</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>posts-service</name>
-    <description>Posts Microservice</description>
+    <name>api-gateway</name>
 
     <properties>
         <java.version>21</java.version>
-        <!-- ✅ Compatible Spring Cloud version -->
         <spring-cloud.version>2023.0.3</spring-cloud.version>
     </properties>
 
     <dependencies>
 
-        <!-- ✅ Eureka CLIENT (NOT SERVER) -->
+        <!-- ✅ Spring Cloud Gateway (Reactive) -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-gateway</artifactId>
+        </dependency>
+
+        <!-- ✅ Eureka Client -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-        </dependency>
-
-        <!-- Web -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <!-- JPA -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
         <!-- Actuator -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-
-        <!-- PostgreSQL -->
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
-        <!-- ModelMapper -->
-        <dependency>
-            <groupId>org.modelmapper</groupId>
-            <artifactId>modelmapper</artifactId>
-            <version>3.2.0</version>
         </dependency>
 
         <!-- Lombok -->
@@ -81,7 +59,7 @@
 
     </dependencies>
 
-    <!-- ✅ Spring Cloud BOM (VERY IMPORTANT) -->
+    <!-- ✅ Cloud BOM -->
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -97,13 +75,11 @@
     <build>
         <plugins>
 
-            <!-- Spring Boot plugin -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
-            <!-- Lombok compiler support -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
