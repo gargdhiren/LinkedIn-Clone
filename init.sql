@@ -1,2 +1,3 @@
 CREATE DATABASE "postsDB";
 CREATE DATABASE "userDB";
+CREATE DATABASE "notificationDB"

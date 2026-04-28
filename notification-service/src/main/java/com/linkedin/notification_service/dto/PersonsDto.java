@@ -1,4 +1,4 @@
-package com.linkedin.posts_service.dto;
+package com.linkedin.notification_service.dto;
 
 import lombok.Data;
 

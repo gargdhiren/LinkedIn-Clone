@@ -1,4 +1,4 @@
-package com.linkedin.user_service.auth;
+package com.linkedin.connections_service.auth;
 
 public class UserContextHolder {
 

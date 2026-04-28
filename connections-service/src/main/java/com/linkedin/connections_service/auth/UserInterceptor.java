@@ -1,6 +1,6 @@
-package com.linkedin.user_service.auth;
+package com.linkedin.connections_service.auth;
 
-import com.linkedin.posts_service.auth.UserContextHolder;
+import com.linkedin.connections_service.auth.UserContextHolder;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;

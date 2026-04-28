@@ -26,7 +26,43 @@ services:
       - neo4j-data:/data
       - neo4j-logs:/logs
 
+  kafka:
+    image: apache/kafka:3.7.1
+    container_name: my-kafka
+    restart: always
+    ports:
+      - "8090:8090"   # ✅ FIXED (host:container)
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@my-kafka:9093
+
+      KAFKA_LISTENERS: PLAINTEXT://:8090,CONTROLLER://:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:8090   # ✅ IMPORTANT
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+
+      KAFKA_LOG_DIRS: /tmp/kraft-combined-logs
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:v0.7.1
+    container_name: kafka-ui
+    restart: always
+    ports:
+      - "8086:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: localhost:8090   # ✅ CHANGED
+    depends_on:
+      - kafka
+
 volumes:
   postgres-data:
   neo4j-data:
   neo4j-logs:
+  kafka-data:
