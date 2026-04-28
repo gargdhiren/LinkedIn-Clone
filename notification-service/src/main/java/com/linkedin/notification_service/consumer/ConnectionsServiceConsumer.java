@@ -28,6 +28,4 @@ public class ConnectionsServiceConsumer {
         String message = "You have received an connection request from  user id : %d" + sendConnectionRequestEvent.getSenderId();
         sendNotificationService.sendNotification(sendConnectionRequestEvent.getReceiverId(), message);
     }
-
-
 }

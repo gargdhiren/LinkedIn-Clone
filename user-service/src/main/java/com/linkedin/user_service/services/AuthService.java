@@ -1,5 +1,6 @@
 package com.linkedin.user_service.services;
 
+import com.linkedin.common.events.UserCreatedEvent;
 import com.linkedin.user_service.dto.LoginDto;
 import com.linkedin.user_service.dto.SignUpDto;
 import com.linkedin.user_service.dto.UserDto;
@@ -11,6 +12,7 @@ import com.linkedin.user_service.utils.PasswordUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,6 +22,7 @@ public class AuthService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final JwtService jwtService;
+    private final KafkaTemplate<Long, UserCreatedEvent>  kafkaTemplate;
 
     public UserDto signUp(SignUpDto signUpDto) {
         boolean userExits=userRepository.existsByEmail(signUpDto.getEmail());
@@ -28,9 +31,15 @@ public class AuthService {
         }
         User user = modelMapper.map(signUpDto, User.class);
         user.setPassword(PasswordUtil.hashPassword(signUpDto.getPassword()));
-        System.out.println();
+        User savedUser=userRepository.save(user);
+        UserCreatedEvent userCreatedEvent = UserCreatedEvent.builder()
+                .userId(savedUser.getId())
+                .name(savedUser.getName()).build();
 
-        return  modelMapper.map(userRepository.save(user), UserDto.class);
+
+        kafkaTemplate.send("user-created-event",userCreatedEvent);
+
+        return  modelMapper.map(savedUser, UserDto.class);
     }
 
     public String login(LoginDto loginDto) {

@@ -21,6 +21,10 @@ public class ConnectionsService {
     private final KafkaTemplate<Long, AcceptConnectionRequestEvent> acceptConnectionRequestEventKafkaTemplate;
     private final KafkaTemplate<Long, SendConnectionRequestEvent> sendConnectionRequestEventKafkaTemplate;
 
+    public void addPerson(Long userId, String name){
+        personsRepository.createPerson(userId, name);
+    }
+
     public List<Persons> getFirstDegreeConnections(){
         Long userId= UserContextHolder.getCurrentUserId();
         log.info("Getting first degree connections for user {}",userId);

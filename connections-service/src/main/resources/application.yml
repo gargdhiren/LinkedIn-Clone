@@ -2,6 +2,22 @@ spring:
   kafka:
     bootstrap-servers: localhost:8090
 
+    consumer:
+      group-id: connection-service
+      auto-offset-reset: earliest
+
+      key-deserializer: org.apache.kafka.common.serialization.LongDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: "com.linkedin.*"
+            use:
+              type:
+                headers: true
+
     producer:
       key-serializer: org.apache.kafka.common.serialization.LongSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
